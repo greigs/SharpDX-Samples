@@ -48,7 +48,7 @@ namespace MiniCubeTexure
                 BufferCount = 1,
                 ModeDescription =
                     new ModeDescription(form.ClientSize.Width, form.ClientSize.Height,
-                                        new Rational(60, 1), Format.R8G8B8A8_UNorm),
+                        new Rational(60, 1), Format.R8G8B8A8_UNorm),
                 IsWindowed = true,
                 OutputHandle = form.Handle,
                 SampleDescription = new SampleDescription(1, 0),
@@ -79,60 +79,61 @@ namespace MiniCubeTexure
 
             // Layout from VertexShader input signature
             var layout = new InputLayout(device, ShaderSignature.GetInputSignature(vertexShaderByteCode), new[]
-                    {
-                        new InputElement("POSITION", 0, Format.R32G32B32A32_Float, 0, 0),
-                        new InputElement("TEXCOORD", 0, Format.R32G32_Float, 16, 0)
-                    });
+            {
+                new InputElement("POSITION", 0, Format.R32G32B32A32_Float, 0, 0),
+                new InputElement("TEXCOORD", 0, Format.R32G32_Float, 16, 0)
+            });
 
             // Instantiate Vertex buiffer from vertex data
             var vertices = Buffer.Create(device, BindFlags.VertexBuffer, new[]
-                                  {
-                                      // 3D coordinates              UV Texture coordinates
-                                      -1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f, // Front
-                                      -1.0f,  1.0f, -1.0f, 1.0f,     0.0f, 0.0f,
-                                       1.0f,  1.0f, -1.0f, 1.0f,     1.0f, 0.0f,
-                                      -1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f,
-                                       1.0f,  1.0f, -1.0f, 1.0f,     1.0f, 0.0f,
-                                       1.0f, -1.0f, -1.0f, 1.0f,     1.0f, 1.0f,
+            {
+                // 3D coordinates              UV Texture coordinates
+                -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 1.0f, // Front
+                -1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
+                1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 0.0f,
+                -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 1.0f,
+                1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 0.0f,
+                1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f,
 
-                                      -1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 0.0f, // BACK
-                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
-                                      -1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 1.0f,
-                                      -1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
-                                       1.0f, -1.0f,  1.0f, 1.0f,     0.0f, 0.0f,
-                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
+                -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 0.0f, // BACK
+                1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+                -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+                -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+                1.0f, -1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+                1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
 
-                                      -1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 1.0f, // Top
-                                      -1.0f, 1.0f,  1.0f,  1.0f,     0.0f, 0.0f,
-                                       1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 0.0f,
-                                      -1.0f, 1.0f, -1.0f,  1.0f,     0.0f, 1.0f,
-                                       1.0f, 1.0f,  1.0f,  1.0f,     1.0f, 0.0f,
-                                       1.0f, 1.0f, -1.0f,  1.0f,     1.0f, 1.0f,
+                -1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 1.0f, // Top
+                -1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+                1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+                -1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 1.0f,
+                1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+                1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 1.0f,
 
-                                      -1.0f,-1.0f, -1.0f,  1.0f,     1.0f, 0.0f, // Bottom
-                                       1.0f,-1.0f,  1.0f,  1.0f,     0.0f, 1.0f,
-                                      -1.0f,-1.0f,  1.0f,  1.0f,     1.0f, 1.0f,
-                                      -1.0f,-1.0f, -1.0f,  1.0f,     1.0f, 0.0f,
-                                       1.0f,-1.0f, -1.0f,  1.0f,     0.0f, 0.0f,
-                                       1.0f,-1.0f,  1.0f,  1.0f,     0.0f, 1.0f,
+                -1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 0.0f, // Bottom
+                1.0f, -1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+                -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+                -1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 0.0f,
+                1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
+                1.0f, -1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
 
-                                      -1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f, // Left
-                                      -1.0f, -1.0f,  1.0f, 1.0f,     0.0f, 0.0f,
-                                      -1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
-                                      -1.0f, -1.0f, -1.0f, 1.0f,     0.0f, 1.0f,
-                                      -1.0f,  1.0f,  1.0f, 1.0f,     1.0f, 0.0f,
-                                      -1.0f,  1.0f, -1.0f, 1.0f,     1.0f, 1.0f,
+                -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 1.0f, // Left
+                -1.0f, -1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+                -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+                -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 1.0f,
+                -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+                -1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 1.0f,
 
-                                       1.0f, -1.0f, -1.0f, 1.0f,     1.0f, 0.0f, // Right
-                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
-                                       1.0f, -1.0f,  1.0f, 1.0f,     1.0f, 1.0f,
-                                       1.0f, -1.0f, -1.0f, 1.0f,     1.0f, 0.0f,
-                                       1.0f,  1.0f, -1.0f, 1.0f,     0.0f, 0.0f,
-                                       1.0f,  1.0f,  1.0f, 1.0f,     0.0f, 1.0f,
-                            });
+                1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 0.0f, // Right
+                1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+                1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+                1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 0.0f,
+                1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
+                1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+            });
 
             // Create Constant Buffer
-            var contantBuffer = new Buffer(device, Utilities.SizeOf<Matrix>(), ResourceUsage.Default, BindFlags.ConstantBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
+            var contantBuffer = new Buffer(device, Utilities.SizeOf<Matrix>(), ResourceUsage.Default,
+                BindFlags.ConstantBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
 
 
             // Create Depth Buffer & View
@@ -153,7 +154,11 @@ namespace MiniCubeTexure
             var depthView = new DepthStencilView(device, depthBuffer);
 
             // Load texture and create sampler
-            var texture = Texture2D.FromFile<Texture2D>(device, "GeneticaMortarlessBlocks.jpg");
+            var texture2 = Texture2D.FromFile<Texture2D>(device, "GeneticaMortarlessBlocks.jpg");
+
+            Texture2D texture = LoadTexture(device);
+            //Texture2D texture = texture2;
+
             var textureView = new ShaderResourceView(device, texture);
 
             var sampler = new SamplerState(device, new SamplerStateDescription()
@@ -174,7 +179,8 @@ namespace MiniCubeTexure
             // Prepare All the stages
             context.InputAssembler.InputLayout = layout;
             context.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleList;
-            context.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertices, Utilities.SizeOf<Vector4>() + Utilities.SizeOf<Vector2>(), 0));
+            context.InputAssembler.SetVertexBuffers(0,
+                new VertexBufferBinding(vertices, Utilities.SizeOf<Vector4>() + Utilities.SizeOf<Vector2>(), 0));
             context.VertexShader.SetConstantBuffer(0, contantBuffer);
             context.VertexShader.Set(vertexShader);
             context.Rasterizer.SetViewport(new Viewport(0, 0, form.ClientSize.Width, form.ClientSize.Height, 0.0f, 1.0f));
@@ -185,7 +191,8 @@ namespace MiniCubeTexure
 
             // Prepare matrices
             var view = Matrix.LookAtLH(new Vector3(0, 0, -5), new Vector3(0, 0, 0), Vector3.UnitY);
-            var proj = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, form.ClientSize.Width / (float)form.ClientSize.Height, 0.1f, 100.0f);
+            var proj = Matrix.PerspectiveFovLH((float) Math.PI/4.0f,
+                form.ClientSize.Width/(float) form.ClientSize.Height, 0.1f, 100.0f);
             var viewProj = Matrix.Multiply(view, proj);
 
             // Use clock
@@ -195,14 +202,14 @@ namespace MiniCubeTexure
             // Main loop
             RenderLoop.Run(form, () =>
             {
-                var time = clock.ElapsedMilliseconds / 1000.0f;
+                var time = clock.ElapsedMilliseconds/1000.0f;
 
                 // Clear views
                 context.ClearDepthStencilView(depthView, DepthStencilClearFlags.Depth, 1.0f, 0);
                 context.ClearRenderTargetView(renderView, Color.Black);
 
                 // Update WorldViewProj Matrix
-                var worldViewProj = Matrix.RotationX(time) * Matrix.RotationY(time * 2) * Matrix.RotationZ(time * .7f) * viewProj;
+                var worldViewProj = Matrix.RotationX(time)*Matrix.RotationY(time*2)*Matrix.RotationZ(time*.7f)*viewProj;
                 worldViewProj.Transpose();
                 context.UpdateSubresource(ref worldViewProj, contantBuffer);
 
@@ -228,6 +235,59 @@ namespace MiniCubeTexure
             context.Dispose();
             swapChain.Dispose();
             factory.Dispose();
+        }
+
+        private static Texture2D LoadTexture(Device device)
+        {
+
+            var ptrVal = ((long)1073743362);
+
+            var texture = device.OpenSharedResource<SharpDX.Direct3D11.Texture2D>(new IntPtr(ptrVal));
+
+            //var mutex = texture.QueryInterface<KeyedMutex>();
+
+
+
+            var released = false;
+            //textureD3D10temp.GetBitmap();
+            try
+            {
+
+               // var result = mutex.Acquire(0, 10000);
+                if (true)//if (result.Success)
+                {
+
+                    var textureCopy = new Texture2D(device, new Texture2DDescription
+                    {
+                        Width = (int) texture.Description.Width,
+                        Height = (int) texture.Description.Height,
+                        MipLevels = 1,
+                        ArraySize = 1,
+                        Format = Format.B8G8R8A8_UNorm,
+                        BindFlags = BindFlags.ShaderResource,
+                        Usage = ResourceUsage.Default,
+                        SampleDescription = new SampleDescription(1, 0),
+                        //CpuAccessFlags = CpuAccessFlags.Read,
+                        //OptionFlags = ResourceOptionFlags.BufferAllowRawViews
+                    });
+                    device.ImmediateContext.CopyResource(texture, textureCopy);
+                    //device.ImmediateContext.CopySubresourceRegion(texture, 0, null, textureCopy, 0, 0, 0, 0);
+                    //device.ImmediateContext.FinishCommandList(false);
+                    device.ImmediateContext.Flush();
+                    
+                    return textureCopy;
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                //mutex.Release(0);
+            }
+            return null;
+
         }
     }
 }
